@@ -21,6 +21,9 @@ export default function FormSingIn() {
     try {
       const res = await loginAction({ email, password });
       if (res.success) {
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new Event('auth-change'));
+        }
         router.push('/dashboard');
         router.refresh();
       } else {

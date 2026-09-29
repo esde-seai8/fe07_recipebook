@@ -13,6 +13,9 @@ export default function FormSingOut() {
     setLoading(true);
     try {
       await logoutAction();
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('auth-change'));
+      }
       router.push('/');
       router.refresh();
     } catch (err) {

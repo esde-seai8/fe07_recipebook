@@ -22,6 +22,9 @@ export default function FormSingUp() {
     try {
       const res = await registerAction({ name, email, password });
       if (res.success) {
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new Event('auth-change'));
+        }
         router.push('/dashboard');
         router.refresh();
       } else {
