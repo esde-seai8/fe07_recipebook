@@ -1,28 +1,59 @@
 import { query } from '@/lib/db';
 
 /**
- * Fetch recipes with optional keyword search and cuisine filtering
+ * Normalizes a database row to guarantee compatibility across UI components
  */
-export async function getRecipes({ search = '', cuisine = '', difficulty = '', limit = 50, offset = 0 } = {}) {
+function normalizeRecipe(row) {
+  if (!row) return null;
+
+  const duration = row.duration || (row.prep_time_minutes || 0) + (row.cook_time_minutes || 0) || 30;
+  const image = row.image || row.image_url || 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&w=1200&q=80';
+  const category = row.category || row.cuisine || 'General';
+
+  // ingredients is native TEXT[] in postgres, pg automatically parses it to string[]
+  let ingredients = row.ingredients;
+  if (typeof ingredients === 'string') {
+    try {
+      ingredients = JSON.parse(ingredients);
+    } catch {
+      ingredients = [ingredients];
+    }
+  }
+
+  return {
+    ...row,
+    category,
+    cuisine: category, // synonym for UI
+    duration,
+    prep_time_minutes: row.prep_time_minutes || Math.max(5, Math.round(duration * 0.35)),
+    cook_time_minutes: row.cook_time_minutes || Math.max(10, Math.round(duration * 0.65)),
+    image,
+    image_url: image, // synonym for UI
+    ingredients: Array.isArray(ingredients) ? ingredients : [],
+    difficulty: row.difficulty || (duration > 45 ? 'Hard' : duration > 25 ? 'Medium' : 'Easy'),
+  };
+}
+
+/**
+ * Fetch recipes with optional keyword search and category filtering
+ */
+export async function getRecipes({ search = '', category = '', cuisine = '', limit = 50, offset = 0 } = {}) {
   let sql = 'SELECT * FROM recipes WHERE 1=1';
   const params = [];
 
+  const filterCategory = category || cuisine;
+
   if (search && search.trim()) {
     params.push(`%${search.trim()}%`);
-    sql += ` AND (title ILIKE $${params.length} OR description ILIKE $${params.length})`;
+    sql += ` AND (title ILIKE $${params.length} OR description ILIKE $${params.length} OR category ILIKE $${params.length})`;
   }
 
-  if (cuisine && cuisine.trim() && cuisine !== 'All') {
-    params.push(cuisine.trim());
-    sql += ` AND cuisine = $${params.length}`;
+  if (filterCategory && filterCategory.trim() && filterCategory !== 'All') {
+    params.push(filterCategory.trim());
+    sql += ` AND category = $${params.length}`;
   }
 
-  if (difficulty && difficulty.trim() && difficulty !== 'All') {
-    params.push(difficulty.trim());
-    sql += ` AND difficulty = $${params.length}`;
-  }
-
-  sql += ' ORDER BY created_at DESC';
+  sql += ' ORDER BY id ASC';
 
   if (limit) {
     params.push(limit);
@@ -35,7 +66,7 @@ export async function getRecipes({ search = '', cuisine = '', difficulty = '', l
   }
 
   const { rows } = await query(sql, params);
-  return rows;
+  return rows.map(normalizeRecipe);
 }
 
 /**
@@ -43,50 +74,61 @@ export async function getRecipes({ search = '', cuisine = '', difficulty = '', l
  */
 export async function getRecipeById(id) {
   const { rows } = await query('SELECT * FROM recipes WHERE id = $1', [id]);
-  return rows[0] || null;
+  return rows[0] ? normalizeRecipe(rows[0]) : null;
 }
 
 /**
- * Create a new recipe
+ * Create a new recipe adhering to .start.sql schema
  */
 export async function createRecipe(recipeData) {
   const {
     title,
-    description,
-    ingredients,
-    instructions,
-    prep_time_minutes = 15,
-    cook_time_minutes = 30,
+    category = 'Other',
+    cuisine,
+    duration = 30,
+    prep_time_minutes,
+    cook_time_minutes,
     servings = 4,
+    ingredients = [],
+    description,
+    image = '',
     image_url = '',
-    cuisine = 'General',
-    difficulty = 'Medium',
   } = recipeData;
+
+  const finalCategory = category || cuisine || 'General';
+  const finalDuration = duration || (prep_time_minutes || 0) + (cook_time_minutes || 0) || 30;
+  const finalImage = image || image_url || 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&w=1200&q=80';
+
+  // Format ingredients as an array of string items
+  const ingredientsArray = Array.isArray(ingredients)
+    ? ingredients.map((item) => {
+        if (typeof item === 'string') return item;
+        if (item && typeof item === 'object') {
+          return `${item.amount ? item.amount + ' ' : ''}${item.name || ''}`.trim();
+        }
+        return String(item);
+      }).filter(Boolean)
+    : [];
 
   const sql = `
     INSERT INTO recipes (
-      title, description, ingredients, instructions,
-      prep_time_minutes, cook_time_minutes, servings,
-      image_url, cuisine, difficulty
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      title, category, duration, servings, ingredients, description, image
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7)
     RETURNING *;
   `;
 
   const params = [
     title,
-    description,
-    JSON.stringify(ingredients || []),
-    JSON.stringify(instructions || []),
-    prep_time_minutes,
-    cook_time_minutes,
+    finalCategory,
+    finalDuration,
     servings,
-    image_url,
-    cuisine,
-    difficulty,
+    ingredientsArray,
+    description,
+    finalImage,
   ];
 
   const { rows } = await query(sql, params);
-  return rows[0];
+  return normalizeRecipe(rows[0]);
 }
 
 /**
@@ -102,15 +144,12 @@ export async function getUserCookbook(userId = 1) {
       c.rating,
       c.created_at AS saved_at,
       r.title,
-      r.description,
-      r.ingredients,
-      r.instructions,
-      r.prep_time_minutes,
-      r.cook_time_minutes,
+      r.category,
+      r.duration,
       r.servings,
-      r.image_url,
-      r.cuisine,
-      r.difficulty
+      r.ingredients,
+      r.description,
+      r.image
     FROM cookbook_items c
     JOIN recipes r ON c.recipe_id = r.id
     WHERE c.user_id = $1
@@ -118,7 +157,16 @@ export async function getUserCookbook(userId = 1) {
   `;
 
   const { rows } = await query(sql, [userId]);
-  return rows;
+  return rows.map((row) => ({
+    ...row,
+    ...normalizeRecipe(row),
+    cookbook_id: row.cookbook_id,
+    user_id: row.user_id,
+    recipe_id: row.recipe_id,
+    personal_notes: row.personal_notes,
+    rating: row.rating,
+    saved_at: row.saved_at,
+  }));
 }
 
 /**
