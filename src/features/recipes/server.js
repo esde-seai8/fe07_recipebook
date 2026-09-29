@@ -37,7 +37,7 @@ function normalizeRecipe(row) {
 /**
  * Fetch recipes with optional keyword search and category filtering
  */
-export async function getRecipes({ search = '', category = '', cuisine = '', limit = 50, offset = 0 } = {}) {
+export async function getRecipes({ search = '', category = '', cuisine = '', maxDuration = null, limit = 50, offset = 0 } = {}) {
   let sql = 'SELECT * FROM recipes WHERE 1=1';
   const params = [];
 
@@ -51,6 +51,11 @@ export async function getRecipes({ search = '', category = '', cuisine = '', lim
   if (filterCategory && filterCategory.trim() && filterCategory !== 'All') {
     params.push(filterCategory.trim());
     sql += ` AND category = $${params.length}`;
+  }
+
+  if (maxDuration && !isNaN(Number(maxDuration)) && Number(maxDuration) > 0) {
+    params.push(Number(maxDuration));
+    sql += ` AND duration <= $${params.length}`;
   }
 
   sql += ' ORDER BY id ASC';

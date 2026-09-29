@@ -2,11 +2,12 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-export async function fetchRecipesApi({ search = '', cuisine = '', difficulty = '' } = {}) {
+export async function fetchRecipesApi({ search = '', category = '', cuisine = '', maxDuration } = {}) {
   const params = new URLSearchParams();
   if (search) params.append('search', search);
-  if (cuisine && cuisine !== 'All') params.append('cuisine', cuisine);
-  if (difficulty && difficulty !== 'All') params.append('difficulty', difficulty);
+  const cat = category || cuisine;
+  if (cat && cat !== 'All') params.append('category', cat);
+  if (maxDuration && maxDuration !== 'All') params.append('maxDuration', String(maxDuration));
 
   const res = await fetch(`/api/recipes?${params.toString()}`);
   if (!res.ok) {

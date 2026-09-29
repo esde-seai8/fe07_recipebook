@@ -75,7 +75,7 @@ export default async function HomePage() {
           {cuisines.map((item) => (
             <Link
               key={item.name}
-              href={`/search?cuisine=${item.name}`}
+              href={`/search?category=${item.name}`}
               className="group p-5 rounded-2xl border border-stone-200 bg-white hover:border-amber-400 hover:shadow-md transition-all flex flex-col items-center text-center space-y-2"
             >
               <span className="text-4xl group-hover:scale-110 transition-transform">{item.icon}</span>

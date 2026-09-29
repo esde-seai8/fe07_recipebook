@@ -6,7 +6,7 @@ import { Clock, Users, Bookmark } from 'lucide-react';
 export default function RecipeCard({ recipe, onSave = undefined, isSaved = false }) {
   if (!recipe) return null;
 
-  const totalTime = (recipe.prep_time_minutes || 0) + (recipe.cook_time_minutes || 0);
+  const totalTime = recipe.duration || (recipe.prep_time_minutes || 0) + (recipe.cook_time_minutes || 0) || 30;
 
   const difficultyColors = {
     Easy: 'bg-emerald-100 text-emerald-800 border-emerald-200',
@@ -29,7 +29,7 @@ export default function RecipeCard({ recipe, onSave = undefined, isSaved = false
           />
           <div className="absolute top-3 left-3 flex gap-2">
             <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-white/90 backdrop-blur-xs text-stone-800 shadow-xs">
-              {recipe.cuisine || 'General'}
+              {recipe.category || recipe.cuisine || 'General'}
             </span>
             <span className={`px-2.5 py-1 text-xs font-semibold rounded-full border ${badgeClass} shadow-xs`}>
               {recipe.difficulty || 'Medium'}

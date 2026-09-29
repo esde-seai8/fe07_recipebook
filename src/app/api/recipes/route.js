@@ -6,11 +6,11 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const search = searchParams.get('search') || '';
     const category = searchParams.get('category') || searchParams.get('cuisine') || '';
-    const difficulty = searchParams.get('difficulty') || '';
+    const maxDuration = searchParams.get('maxDuration') || searchParams.get('duration') || '';
     const limit = parseInt(searchParams.get('limit') || '50', 10);
     const offset = parseInt(searchParams.get('offset') || '0', 10);
 
-    const recipes = await getRecipes({ search, category, difficulty, limit, offset });
+    const recipes = await getRecipes({ search, category, maxDuration, limit, offset });
     return NextResponse.json(recipes);
   } catch (error) {
     console.error('API /api/recipes error:', error);
