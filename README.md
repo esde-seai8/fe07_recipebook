@@ -36,12 +36,20 @@ fe07_recipebook
  ┃ ┃ ┃ ┗ recipes
  ┃ ┃ ┃ ┃ ┣ [id]/route.js            # Single recipe API (async params)
  ┃ ┃ ┃ ┃ ┗ route.js                 # Recipe listing & creation API
- ┃ ┃ ┣ dashboard/page.jsx           # User's personal cookbook with notes CRUD
- ┃ ┃ ┣ recipes/[id]/page.tsx        # Recipe detail page (TypeScript async params)
- ┃ ┃ ┣ search/page.jsx              # Search and category filtering page
+ ┃ ┃ ┣ dashboard
+ ┃ ┃ ┃ ┣ loading.jsx                # Cookbook dashboard loading skeleton
+ ┃ ┃ ┃ ┗ page.jsx                   # User's personal cookbook with notes CRUD
+ ┃ ┃ ┣ recipes
+ ┃ ┃ ┃ ┗ [id]
+ ┃ ┃ ┃ ┃ ┣ loading.tsx              # Detail view loading skeleton
+ ┃ ┃ ┃ ┃ ┗ page.tsx                 # Recipe detail page (TypeScript async params)
+ ┃ ┃ ┣ search
+ ┃ ┃ ┃ ┣ loading.jsx                # Search page loading skeleton
+ ┃ ┃ ┃ ┗ page.jsx                   # Search and category filtering page
  ┃ ┃ ┣ favicon.ico
  ┃ ┃ ┣ globals.css                  # TailwindCSS theme
  ┃ ┃ ┣ layout.tsx                   # Root layout with Provider & Navbar
+ ┃ ┃ ┣ not-found.jsx                # Custom culinary 404 page
  ┃ ┃ ┣ page.tsx                     # Landing home page (Hero, Categories & Featured)
  ┃ ┃ ┣ provider.jsx                 # TanStack QueryClientProvider wrapper
  ┃ ┃ ┣ loading.jsx                  # Fallback streaming loader
@@ -49,7 +57,7 @@ fe07_recipebook
  ┃ ┣ components
  ┃ ┃ ┣ index.js                     # Component barrel exports
  ┃ ┃ ┣ Loading.jsx                  # Skeletons and spinners
- ┃ ┃ ┗ Navbar.jsx                   # Sticky navigation bar
+ ┃ ┃ ┗ Navbar.jsx                   # Live session-aware navigation bar
  ┃ ┣ features
  ┃ ┃ ┣ auth
  ┃ ┃ ┃ ┣ components
@@ -62,6 +70,10 @@ fe07_recipebook
  ┃ ┃ ┗ recipes
  ┃ ┃ ┃ ┣ components
  ┃ ┃ ┃ ┃ ┣ AddRecipeForm.jsx        # Modal form to add custom recipes
+ ┃ ┃ ┃ ┃ ┣ CookbookItemCard.jsx     # Cookbook item with inline notes and rating editor
+ ┃ ┃ ┃ ┃ ┣ CookbookManager.jsx      # Cookbook dashboard manager with stats and filters
+ ┃ ┃ ┃ ┃ ┣ DetailCookbookSave.jsx   # Recipe detail cookbook bookmarking widget
+ ┃ ┃ ┃ ┃ ┣ InteractiveIngredients.tsx # Checkable ingredients checklist
  ┃ ┃ ┃ ┃ ┣ RecipeCard.jsx           # Recipe presentation card
  ┃ ┃ ┃ ┃ ┗ RecipesList.jsx          # Responsive recipe grid
  ┃ ┃ ┃ ┣ actions.js                 # Next.js Server Actions (CRUD)
