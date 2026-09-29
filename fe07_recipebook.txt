@@ -1,0 +1,62 @@
+fe07_recipebook
+ ┣ src
+ ┃ ┣ app
+ ┃ ┃ ┣ (auth)
+ ┃ ┃ ┃ ┣ login
+ ┃ ┃ ┃ ┃ ┗ page.js
+ ┃ ┃ ┃ ┗ register
+ ┃ ┃ ┃ ┃ ┗ page.js
+ ┃ ┃ ┣ api
+ ┃ ┃ ┃ ┣ auth
+ ┃ ┃ ┃ ┃ ┗ [...all]
+ ┃ ┃ ┃ ┃ ┃ ┗ route.js
+ ┃ ┃ ┃ ┗ recipes
+ ┃ ┃ ┃ ┃ ┣ [id]
+ ┃ ┃ ┃ ┃ ┃ ┗ route.js
+ ┃ ┃ ┃ ┃ ┗ route.js
+ ┃ ┃ ┣ dashboard
+ ┃ ┃ ┃ ┗ page.js
+ ┃ ┃ ┣ search
+ ┃ ┃ ┃ ┗ page.js
+ ┃ ┃ ┣ favicon.ico
+ ┃ ┃ ┣ globals.css
+ ┃ ┃ ┣ layout.js
+ ┃ ┃ ┣ page.js
+ ┃ ┃ ┗ provider.jsx
+ ┃ ┣ components
+ ┃ ┃ ┣ index.js
+ ┃ ┃ ┣ Loading.jsx
+ ┃ ┃ ┗ Navbar.jsx
+ ┃ ┣ features
+ ┃ ┃ ┣ auth
+ ┃ ┃ ┃ ┣ components
+ ┃ ┃ ┃ ┃ ┣ FormSingIn.jsx
+ ┃ ┃ ┃ ┃ ┣ FormSingOut.jsx
+ ┃ ┃ ┃ ┃ ┗ FormSingUp.jsx
+ ┃ ┃ ┃ ┣ actions.js
+ ┃ ┃ ┃ ┣ index.js
+ ┃ ┃ ┃ ┗ server.js
+ ┃ ┃ ┗ recipes
+ ┃ ┃ ┃ ┣ components
+ ┃ ┃ ┃ ┃ ┣ AddRecipeForm.jsx
+ ┃ ┃ ┃ ┃ ┣ RecipeCard.jsx
+ ┃ ┃ ┃ ┃ ┗ RecipesList.jsx
+ ┃ ┃ ┃ ┣ actions.js
+ ┃ ┃ ┃ ┣ index.js
+ ┃ ┃ ┃ ┣ mutations.js
+ ┃ ┃ ┃ ┣ queries.js
+ ┃ ┃ ┃ ┗ server.js
+ ┃ ┗ lib
+ ┃ ┃ ┣ utils
+ ┃ ┃ ┃ ┗ makeQueryClient.js
+ ┃ ┃ ┗ db.js
+ ┣ .gitignore 
+ ┣ .start.sql
+ ┣ eslint.config.mjs
+ ┣ jsconfig.json
+ ┣ next.config.mjs
+ ┣ package-lock.json
+ ┣ package.json
+ ┣ postcss.config.mjs
+ ┗ README.md
+
