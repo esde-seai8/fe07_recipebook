@@ -29,8 +29,8 @@ fe07_recipebook
  ┣ src
  ┃ ┣ app
  ┃ ┃ ┣ (auth)
- ┃ ┃ ┃ ┣ login/page.jsx             # User sign-in page (FormSingIn)
- ┃ ┃ ┃ ┗ register/page.jsx          # User registration page (FormSingUp)
+ ┃ ┃ ┃ ┣ login/page.jsx             # User sign-in page (FormSignIn)
+ ┃ ┃ ┃ ┗ register/page.jsx          # User registration page (FormSignUp)
  ┃ ┃ ┣ api
  ┃ ┃ ┃ ┣ auth/[...all]/route.js     # Auth endpoints (session, login, register, logout)
  ┃ ┃ ┃ ┗ recipes
@@ -61,9 +61,9 @@ fe07_recipebook
  ┃ ┣ features
  ┃ ┃ ┣ auth
  ┃ ┃ ┃ ┣ components
- ┃ ┃ ┃ ┃ ┣ FormSingIn.jsx           # Sign in form
- ┃ ┃ ┃ ┃ ┣ FormSingOut.jsx          # Sign out action button
- ┃ ┃ ┃ ┃ ┗ FormSingUp.jsx           # Registration form
+ ┃ ┃ ┃ ┃ ┣ FormSignIn.jsx           # Sign in form
+ ┃ ┃ ┃ ┃ ┣ FormSignOut.jsx          # Sign out action button
+ ┃ ┃ ┃ ┃ ┗ FormSignUp.jsx           # Registration form
  ┃ ┃ ┃ ┣ actions.js                 # Server Actions for authentication
  ┃ ┃ ┃ ┣ index.js
  ┃ ┃ ┃ ┗ server.js                  # User verification & password hashing (bcryptjs)

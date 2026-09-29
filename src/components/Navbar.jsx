@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { UtensilsCrossed, BookOpen, Search, LogIn, UserPlus, ChefHat } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
-import FormSingOut from '@/features/auth/components/FormSingOut';
+import FormSignOut from '@/features/auth/components/FormSignOut';
 
 async function fetchSession() {
   try {
@@ -96,7 +96,7 @@ export default function Navbar() {
                     {user.name || user.email?.split('@')[0]}
                   </span>
                 </div>
-                <FormSingOut />
+                <FormSignOut />
               </div>
             ) : (
               <>

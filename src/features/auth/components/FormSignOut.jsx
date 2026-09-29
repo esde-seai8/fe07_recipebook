@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { LogOut } from 'lucide-react';
 import { logoutAction } from '../actions';
 
-export default function FormSingOut() {
+export default function FormSignOut() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 

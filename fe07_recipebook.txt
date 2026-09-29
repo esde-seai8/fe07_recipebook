@@ -30,9 +30,9 @@ fe07_recipebook
  ┃ ┣ features
  ┃ ┃ ┣ auth
  ┃ ┃ ┃ ┣ components
- ┃ ┃ ┃ ┃ ┣ FormSingIn.jsx
- ┃ ┃ ┃ ┃ ┣ FormSingOut.jsx
- ┃ ┃ ┃ ┃ ┗ FormSingUp.jsx
+ ┃ ┃ ┃ ┃ ┣ FormSignIn.jsx
+ ┃ ┃ ┃ ┃ ┣ FormSignOut.jsx
+ ┃ ┃ ┃ ┃ ┗ FormSignUp.jsx
  ┃ ┃ ┃ ┣ actions.js
  ┃ ┃ ┃ ┣ index.js
  ┃ ┃ ┃ ┗ server.js

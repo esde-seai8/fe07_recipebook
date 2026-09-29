@@ -1,4 +1,4 @@
-import FormSingUp from '@/features/auth/components/FormSingUp';
+import FormSignUp from '@/features/auth/components/FormSignUp';
 import { ChefHat } from 'lucide-react';
 
 export default function RegisterPage() {
@@ -13,7 +13,7 @@ export default function RegisterPage() {
           <p className="text-stone-500 text-xs">Join Recipe Book and build your digital culinary notebook</p>
         </div>
 
-        <FormSingUp />
+        <FormSignUp />
       </div>
     </div>
   );

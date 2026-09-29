@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { BookOpen, Search } from 'lucide-react';
 import { getUserCookbook } from '@/features/recipes/server';
 import CookbookManager from '@/features/recipes/components/CookbookManager';
-import FormSingOut from '@/features/auth/components/FormSingOut';
+import FormSignOut from '@/features/auth/components/FormSignOut';
 
 export default async function DashboardPage() {
   let cookbookItems = [];
@@ -36,7 +36,7 @@ export default async function DashboardPage() {
             <Search className="w-4 h-4" />
             <span>Find Recipes</span>
           </Link>
-          <FormSingOut />
+          <FormSignOut />
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-export { default as FormSingIn } from './components/FormSingIn';
-export { default as FormSingUp } from './components/FormSingUp';
-export { default as FormSingOut } from './components/FormSingOut';
+export { default as FormSignIn } from './components/FormSignIn';
+export { default as FormSignUp } from './components/FormSignUp';
+export { default as FormSignOut } from './components/FormSignOut';
 export * from './actions';

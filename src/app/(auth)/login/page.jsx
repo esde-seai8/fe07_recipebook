@@ -1,4 +1,4 @@
-import FormSingIn from '@/features/auth/components/FormSingIn';
+import FormSignIn from '@/features/auth/components/FormSignIn';
 import { UtensilsCrossed } from 'lucide-react';
 
 export default function LoginPage() {
@@ -13,7 +13,7 @@ export default function LoginPage() {
           <p className="text-stone-500 text-xs">Sign in to access your personal recipe cookbook</p>
         </div>
 
-        <FormSingIn />
+        <FormSignIn />
       </div>
     </div>
   );
