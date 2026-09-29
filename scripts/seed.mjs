@@ -29,6 +29,10 @@ async function seed() {
       throw new Error(`Cannot find .start.sql at ${sqlPath}`);
     }
 
+    // Reset recipes and cookbook items for clean, idempotent seeding
+    await client.query('DROP TABLE IF EXISTS cookbook_items CASCADE;');
+    await client.query('DROP TABLE IF EXISTS recipes CASCADE;');
+
     const sqlContent = fs.readFileSync(sqlPath, 'utf8');
     console.log('Executing .start.sql (creating recipes table and inserting 43 curated recipes)...');
     await client.query(sqlContent);
