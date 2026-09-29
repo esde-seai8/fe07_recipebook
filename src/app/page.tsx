@@ -21,7 +21,7 @@ export default async function HomePage() {
   return (
     <div className="space-y-12">
       {/* Hero Section */}
-      <section className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 text-white p-8 sm:p-14 shadow-xl">
+      <section className="relative rounded-3xl overflow-hidden bg-linear-to-br from-amber-500 via-orange-500 to-amber-600 text-white p-8 sm:p-14 shadow-xl">
         <div className="relative z-10 max-w-2xl space-y-6">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5" />
