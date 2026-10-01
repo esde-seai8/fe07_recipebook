@@ -3,27 +3,12 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { UtensilsCrossed, BookOpen, Search, LogIn, UserPlus, ChefHat } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
 import FormSignOut from '@/features/auth/components/FormSignOut';
-
-async function fetchSession() {
-  try {
-    const res = await fetch('/api/auth/session', { cache: 'no-store' });
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data?.authenticated ? data.user : null;
-  } catch {
-    return null;
-  }
-}
+import { useSession } from '@/features/auth/hooks';
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { data: user } = useQuery({
-    queryKey: ['session', pathname],
-    queryFn: fetchSession,
-    staleTime: 5000,
-  });
+  const { data: user } = useSession();
 
   const isActive = (path) => pathname === path;
 

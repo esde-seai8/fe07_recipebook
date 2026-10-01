@@ -1,13 +1,20 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { BookOpen, Search } from 'lucide-react';
+import { getCurrentUser } from '@/features/auth/server';
 import { getUserCookbook } from '@/features/recipes/server';
 import CookbookManager from '@/features/recipes/components/CookbookManager';
 import FormSignOut from '@/features/auth/components/FormSignOut';
 
 export default async function DashboardPage() {
+  const user = await getCurrentUser();
+  if (!user) {
+    redirect('/login');
+  }
+
   let cookbookItems = [];
   try {
-    cookbookItems = await getUserCookbook(1);
+    cookbookItems = await getUserCookbook(user.userId);
   } catch (error) {
     console.error('Failed to load cookbook items from Neon:', error);
   }
@@ -23,7 +30,7 @@ export default async function DashboardPage() {
             </div>
             <div>
               <h1 className="text-3xl font-black text-stone-900 tracking-tight">My Cookbook</h1>
-              <p className="text-stone-500 text-sm">Your personal culinary archive and customized recipe notes</p>
+              <p className="text-stone-500 text-sm">Welcome back, {user.name || user.email}! Your personal culinary archive and customized recipe notes</p>
             </div>
           </div>
         </div>

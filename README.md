@@ -1,28 +1,28 @@
-# 🍳 Recipe Book (fe07_recipebook)
+# Recipe Book (fe07_recipebook)
 
-A modern, full-featured **Recipe Creator, Search, and Personal Cookbook** web application built with **Next.js 15 (App Router)**, **TypeScript**, **TailwindCSS**, **Neon Serverless PostgreSQL**, and **TanStack React Query**.
+A modern, full-featured **Recipe Creator, Search, and Personal Cookbook** web application built with **Next.js**, **TypeScript**, **TailwindCSS**, **Neon Serverless PostgreSQL**, and **TanStack React Query**.
 
 ---
 
-## 🌟 Features & Functional Requirements
+## Features & Functional Requirements
 
 - **FR001 / FR002: GitHub & PR Workflow**: Hosted in public GitHub repository ([`esde-seai8/fe07_recipebook`](https://github.com/esde-seai8/fe07_recipebook)) following Conventional Commits and feature branches.
-- **FR003: Framework Scaffolding**: Built on Next.js 15 with the official TypeScript template (`"allowJs": true`) and App Router.
+- **FR003: Framework Scaffolding**: Built on Next.js with TypeScript template (`"allowJs": true`).
 - **FR004: Routing Configuration**: Declarative client routes (`/`, `/search`, `/recipes/[id]`, `/dashboard`, `/(auth)/login`, `/(auth)/register`), Next.js Server Actions, and REST Route Handlers.
 - **FR005: TailwindCSS Styling**: Polished, responsive culinary design system with warm amber/stone accents, card grids, badges, and mobile-friendly layouts.
 - **FR006: Neon Integration**: Server-side singleton connection pooling to Neon Serverless PostgreSQL (`pg.Pool` with TLS) connected to the built-in PgBouncer pooler endpoint (`-pooler.neon.tech`).
 - **FR007: Data Generation & Seeding**: Automated seeding script (`npm run db:seed`) executing `.start.sql` with **43 curated international recipes**, plus `users` and `cookbook_items` tables.
 - **FR008: Search Functionality**: Real-time recipe search by title and description, filterable by cuisine/category (`Italian`, `Indian`, `Mediterranean`, `Breakfast`, `Japanese`, `Dessert`, etc.).
-- **FR009: Recipe Detail Page**: Dedicated detail view with hero photography, ingredients checklist, step-by-step cooking instructions, and Next.js 15 async promise params typing: `params: Promise<{ id: string }>`.
+- **FR009: Recipe Detail Page**: Dedicated detail view, ingredients checklist, descriptions or instructions, and Next.js async promise params typing: `params: Promise<{ id: string }>`.
 - **FR010: Cookbook CRUD**: Add recipes to cookbook, list saved items, edit personal culinary notes and star ratings, and remove items with persistent PostgreSQL storage.
-- **FR011: Loading & Error Handling**: Instant feedback with skeleton cards (`Loading.jsx`), Suspense streaming (`loading.jsx`), and resilient error boundaries (`error.jsx`).
+- **FR011: Loading & Error Handling**: Instant feedback with skeleton cards (`Loading.jsx`), Suspense loading (`loading.jsx`), and resilient error boundaries (`error.jsx`).
 - **FR012: Code Organization**: Strictly modular architecture following the `fe07_recipebook.txt` component tree.
 - **FR013: Documentation**: Complete setup, architecture, schema, and Neon guide.
 - **FR014: Next.js Deployment**: Ready for Vercel deployment with edge-compatible pooling and streaming.
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 fe07_recipebook
@@ -37,14 +37,14 @@ fe07_recipebook
  ┃ ┃ ┃ ┃ ┣ [id]/route.js            # Single recipe API (async params)
  ┃ ┃ ┃ ┃ ┗ route.js                 # Recipe listing & creation API
  ┃ ┃ ┣ dashboard
- ┃ ┃ ┃ ┣ loading.jsx                # Cookbook dashboard loading skeleton
+ ┃ ┃ ┃ ┣ loading.jsx                # Cookbook dashboard loading 
  ┃ ┃ ┃ ┗ page.jsx                   # User's personal cookbook with notes CRUD
  ┃ ┃ ┣ recipes
  ┃ ┃ ┃ ┗ [id]
- ┃ ┃ ┃ ┃ ┣ loading.tsx              # Detail view loading skeleton
+ ┃ ┃ ┃ ┃ ┣ loading.tsx              # Detail view loading 
  ┃ ┃ ┃ ┃ ┗ page.tsx                 # Recipe detail page (TypeScript async params)
  ┃ ┃ ┣ search
- ┃ ┃ ┃ ┣ loading.jsx                # Search page loading skeleton
+ ┃ ┃ ┃ ┣ loading.jsx                # Search page loading 
  ┃ ┃ ┃ ┗ page.jsx                   # Search and category filtering page
  ┃ ┃ ┣ favicon.ico
  ┃ ┃ ┣ globals.css                  # TailwindCSS theme
@@ -99,7 +99,7 @@ fe07_recipebook
 
 ---
 
-## 🗄️ Database Architecture (`.start.sql`)
+## Database Architecture (`.start.sql`)
 
 The database is built on **Neon Serverless PostgreSQL** and adheres to the official `.start.sql` specification:
 
@@ -133,7 +133,7 @@ The database is built on **Neon Serverless PostgreSQL** and adheres to the offic
 
 ---
 
-## 🐘 Neon PostgreSQL Setup & Connection (FR006)
+## Neon PostgreSQL Setup & Connection (FR006)
 
 1. Sign in to [https://neon.tech](https://neon.tech) via GitHub.
 2. Create a new project named **`recipe-book`** (Postgres 16/17).
@@ -153,7 +153,7 @@ The database is built on **Neon Serverless PostgreSQL** and adheres to the offic
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### 1. Install Dependencies
 *(On Windows PowerShell, use `npm.cmd`)*:
@@ -176,7 +176,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 🛠 Available Scripts
+## Available Scripts
 
 - `npm.cmd run dev`: Launch Next.js development server with Turbopack hot-reloading.
 - `npm.cmd run build`: Compile and build optimized production bundle.
@@ -186,9 +186,9 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 📝 TypeScript Dynamic APIs Provision
+## TypeScript Dynamic APIs Provision
 
-In Next.js 15, dynamic route parameters are asynchronous Promises. All dynamic pages and route handlers type `params` as a `Promise` and resolve them with `await params`:
+In Next.js, dynamic route parameters are asynchronous Promises. All dynamic pages and route handlers type `params` as a `Promise` and resolve them with `await params`:
 
 ```typescript
 // src/app/recipes/[id]/page.tsx
@@ -205,7 +205,7 @@ export default async function RecipeDetailPage({
 
 ---
 
-## 🚢 Deployment to Vercel (FR014)
+## Deployment to Vercel (FR014)
 
 1. Push your repository to GitHub:
    ```powershell

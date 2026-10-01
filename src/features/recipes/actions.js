@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { getCurrentUser } from '@/features/auth/server';
 import {
   createRecipe,
   addRecipeToCookbook,
@@ -10,6 +11,10 @@ import {
 
 export async function createRecipeAction(formData) {
   try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return { success: false, error: 'Authentication required. Please sign in to create a recipe.' };
+    }
     const newRecipe = await createRecipe(formData);
     revalidatePath('/search');
     revalidatePath('/');
@@ -22,7 +27,11 @@ export async function createRecipeAction(formData) {
 
 export async function addToCookbookAction(recipeId, personalNotes = '', rating = 5) {
   try {
-    const item = await addRecipeToCookbook(1, recipeId, personalNotes, rating);
+    const user = await getCurrentUser();
+    if (!user) {
+      return { success: false, error: 'Please sign in to save to your cookbook or add notes.' };
+    }
+    const item = await addRecipeToCookbook(user.userId, recipeId, personalNotes, rating);
     revalidatePath('/dashboard');
     return { success: true, item };
   } catch (error) {
@@ -33,6 +42,10 @@ export async function addToCookbookAction(recipeId, personalNotes = '', rating =
 
 export async function updateCookbookNotesAction(cookbookId, personalNotes, rating) {
   try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return { success: false, error: 'Authentication required.' };
+    }
     const item = await updateCookbookItem(cookbookId, personalNotes, rating);
     revalidatePath('/dashboard');
     return { success: true, item };
@@ -44,6 +57,10 @@ export async function updateCookbookNotesAction(cookbookId, personalNotes, ratin
 
 export async function removeFromCookbookAction(cookbookId) {
   try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return { success: false, error: 'Authentication required.' };
+    }
     const deleted = await removeCookbookItem(cookbookId);
     revalidatePath('/dashboard');
     return { success: true, item: deleted };

@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, Suspense } from 'react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Search as SearchIcon, Filter, Plus, Check, Clock, RotateCcw } from 'lucide-react';
 import { useRecipes } from '@/features/recipes/queries';
 import { useAddToCookbook, useCreateRecipe } from '@/features/recipes/mutations';
+import { useSession } from '@/features/auth/hooks';
 import RecipesList from '@/features/recipes/components/RecipesList';
 import AddRecipeForm from '@/features/recipes/components/AddRecipeForm';
 import Loading from '@/components/Loading';
@@ -31,6 +33,7 @@ const DURATION_OPTIONS = [
 ];
 
 function SearchContent() {
+  const { data: user } = useSession();
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get('category') || searchParams.get('cuisine') || 'All';
   const initialQuery = searchParams.get('q') || searchParams.get('search') || '';
@@ -59,8 +62,16 @@ function SearchContent() {
   const createRecipe = useCreateRecipe();
 
   const handleSaveToCookbook = async (recipeId) => {
+    if (!user) {
+      showToast('Please sign in to save recipes to your cookbook.');
+      return;
+    }
     try {
-      await addToCookbook.mutateAsync({ recipeId, notes: 'Saved from search', rating: 5 });
+      const res = await addToCookbook.mutateAsync({ recipeId, notes: 'Saved from search', rating: 5 });
+      if (res && res.success === false) {
+        showToast(res.error || 'Failed to save recipe.');
+        return;
+      }
       setSavedRecipeIds((prev) => [...prev, recipeId]);
       showToast('Recipe added to your cookbook!');
     } catch {
@@ -69,8 +80,16 @@ function SearchContent() {
   };
 
   const handleCreateRecipe = async (recipeData) => {
+    if (!user) {
+      showToast('Please sign in to create a recipe.');
+      return;
+    }
     try {
-      await createRecipe.mutateAsync(recipeData);
+      const res = await createRecipe.mutateAsync(recipeData);
+      if (res && res.success === false) {
+        showToast('Error: ' + res.error);
+        return;
+      }
       setIsAddModalOpen(false);
       showToast('New recipe created successfully!');
     } catch (err) {
@@ -110,13 +129,23 @@ function SearchContent() {
           </p>
         </div>
 
-        <button
-          onClick={() => setIsAddModalOpen(true)}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold shadow-xs transition-colors self-start sm:self-auto cursor-pointer"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Create Recipe</span>
-        </button>
+        {user ? (
+          <button
+            onClick={() => setIsAddModalOpen(true)}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold shadow-xs transition-colors self-start sm:self-auto cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Create Recipe</span>
+          </button>
+        ) : (
+          <Link
+            href="/login"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-sm font-semibold shadow-xs transition-colors self-start sm:self-auto"
+          >
+            <Plus className="w-4 h-4 text-stone-500" />
+            <span>Sign in to Add Recipe</span>
+          </Link>
+        )}
       </div>
 
       {/* Search Bar & Filter Controls */}
@@ -224,13 +253,15 @@ function SearchContent() {
         />
       </div>
 
-      {/* Add Recipe Modal */}
-      <AddRecipeForm
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onSubmit={handleCreateRecipe}
-        isSubmitting={createRecipe.isPending}
-      />
+      {/* Add Recipe Modal (Only for Authenticated Users) */}
+      {user && (
+        <AddRecipeForm
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          onSubmit={handleCreateRecipe}
+          isSubmitting={createRecipe.isPending}
+        />
+      )}
     </div>
   );
 }

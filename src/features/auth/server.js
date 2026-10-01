@@ -1,8 +1,23 @@
+import { cookies } from 'next/headers';
 import { query } from '@/lib/db';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 const AUTH_SECRET = process.env.AUTH_SECRET || 'fallback-secret-for-development-change-in-prod';
+
+/**
+ * Reads the auth_token cookie and returns the decoded user payload if valid, or null
+ */
+export async function getCurrentUser() {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('auth_token')?.value;
+    if (!token) return null;
+    return jwt.verify(token, AUTH_SECRET);
+  } catch {
+    return null;
+  }
+}
 
 export async function authenticateUser(email, password) {
   const { rows } = await query('SELECT * FROM users WHERE email = $1', [email]);

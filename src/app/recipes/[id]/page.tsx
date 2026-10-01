@@ -46,7 +46,7 @@ export default async function RecipeDetailPage({
         </span>
       </div>
 
-      {/* Hero Visual Card */}
+      {/* Visual Card */}
       <div className="rounded-3xl overflow-hidden bg-white border border-stone-200 shadow-md">
         <div className="relative h-72 sm:h-96 w-full bg-stone-100 overflow-hidden">
           <img
@@ -54,7 +54,7 @@ export default async function RecipeDetailPage({
             alt={recipe.title}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
           <div className="absolute bottom-6 left-6 right-6 text-white space-y-3">
             <div className="flex flex-wrap items-center gap-2">
               <span className="px-3 py-1 text-xs font-bold rounded-full bg-amber-500 text-white shadow-xs">
@@ -73,28 +73,28 @@ export default async function RecipeDetailPage({
         {/* Quick Recipe Metrics */}
         <div className="p-6 bg-stone-50 border-t border-stone-200 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
           <div className="p-3 bg-white rounded-xl border border-stone-200/60 shadow-2xs">
-            <span className="block text-xs font-semibold text-stone-500 uppercase tracking-wider flex items-center justify-center gap-1">
+            <span className="text-xs font-semibold text-stone-500 uppercase tracking-wider flex items-center justify-center gap-1">
               <Clock className="w-3.5 h-3.5 text-amber-500" /> Total Time
             </span>
-            <span className="text-lg font-bold text-stone-900 mt-1 block">{duration} mins</span>
+            <span className="text-lg font-bold text-stone-900 mt-1 flex">{duration} mins</span>
           </div>
 
           <div className="p-3 bg-white rounded-xl border border-stone-200/60 shadow-2xs">
-            <span className="block text-xs font-semibold text-stone-500 uppercase tracking-wider flex items-center justify-center gap-1">
+            <span className="text-xs font-semibold text-stone-500 uppercase tracking-wider flex items-center justify-center gap-1">
               <Users className="w-3.5 h-3.5 text-amber-500" /> Servings
             </span>
             <span className="text-lg font-bold text-stone-900 mt-1 block">{recipe.servings} portions</span>
           </div>
 
           <div className="p-3 bg-white rounded-xl border border-stone-200/60 shadow-2xs">
-            <span className="block text-xs font-semibold text-stone-500 uppercase tracking-wider flex items-center justify-center gap-1">
+            <span className="text-xs font-semibold text-stone-500 uppercase tracking-wider flex items-center justify-center gap-1">
               <Utensils className="w-3.5 h-3.5 text-amber-500" /> Ingredients
             </span>
             <span className="text-lg font-bold text-stone-900 mt-1 block">{ingredients.length} items</span>
           </div>
 
           <div className="p-3 bg-white rounded-xl border border-stone-200/60 shadow-2xs">
-            <span className="block text-xs font-semibold text-stone-500 uppercase tracking-wider flex items-center justify-center gap-1">
+            <span className="text-xs font-semibold text-stone-500 uppercase tracking-wider flex items-center justify-center gap-1">
               <BookOpen className="w-3.5 h-3.5 text-amber-500" /> Cuisine
             </span>
             <span className="text-lg font-bold text-stone-900 mt-1 block">{recipe.category}</span>
@@ -102,32 +102,19 @@ export default async function RecipeDetailPage({
         </div>
       </div>
 
-      {/* Description & Action Bar */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 p-6 bg-white rounded-2xl border border-stone-200 shadow-xs">
-        <div className="space-y-1 max-w-xl">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-amber-800">About this Dish</h2>
-          <p className="text-stone-700 leading-relaxed text-sm sm:text-base">{recipe.description}</p>
-        </div>
-
-        {/* Bookmark and Personal Notes Form */}
-        <div className="shrink-0 w-full sm:w-auto">
-          <DetailCookbookSave recipeId={recipeId} />
-        </div>
-      </div>
-
-      {/* Two-Column Recipe Details: Interactive Ingredients & Preparation */}
+      {/* Two-Column Recipe Details: Interactive Ingredients & Recipe Overview */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Ingredients Column with interactive checkboxes */}
         <div className="md:col-span-1">
           <InteractiveIngredients ingredients={ingredients} />
         </div>
 
-        {/* Preparation Guide & Steps Column */}
+        {/* Recipe Overview Column */}
         <div className="md:col-span-2 space-y-6">
-          <section className="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-4">
+          <section className="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-5">
             <div className="flex items-center gap-2 border-b border-stone-100 pb-3">
               <Utensils className="w-5 h-5 text-amber-600" />
-              <h2 className="text-xl font-bold text-stone-900">Culinary Instructions</h2>
+              <h2 className="text-xl font-bold text-stone-900">Recipe Overview</h2>
             </div>
 
             <div className="p-5 rounded-2xl bg-amber-50/50 border border-amber-200/60 space-y-3">
@@ -140,13 +127,18 @@ export default async function RecipeDetailPage({
               </div>
             </div>
 
-            {/* Chef Tip Card */}
+            {/* Save to Cookbook & Add Note Actions */}
+            <div className="pt-2 border-t border-stone-100">
+              <DetailCookbookSave recipeId={recipeId} />
+            </div>
+
+            {/* Kitchen Tip Card */}
             <div className="p-4 rounded-xl bg-stone-50 border border-stone-200 text-xs text-stone-600 space-y-1">
               <span className="font-bold text-stone-800 flex items-center gap-1">
                 💡 Kitchen Tip:
               </span>
               <p>
-                Have all ingredients prepped and measured beforehand (mise en place) to ensure a smooth, enjoyable cooking experience.
+                Have all ingredients prepped and measured beforehand to ensure a smooth, enjoyable cooking experience.
               </p>
             </div>
           </section>
